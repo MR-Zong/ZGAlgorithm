@@ -17,7 +17,7 @@ studentList * createList(int n){
    end = head;
    for(int i=0;i<n;i++){
 	node = (studentList *)malloc(sizeof(studentList));
-	printf("请输入%d个数字：\n",n);
+	printf("请输入%d个中的第%d个数字：\n",n,i+1);
 	scanf("%d",&node->score);
 	end->next = node; 
 	end = node;
@@ -35,6 +35,20 @@ studentList * getStudent(studentList *head,int n){
         }
 	return node;
 } 
+
+void addElement(studentList *head,studentList *element, int n){
+    studentList *preNode, *node=head;
+    int i=0;
+    while(i<n && node!=NULL){
+        if(i==n-1){
+	    preNode = node;
+	}
+	i++;
+	node = node->next;
+    }
+    preNode->next = element;
+    element->next = node;
+}
 
 void deleteElement(studentList *head, int n){
     studentList *preNode, *node = head;
@@ -80,23 +94,41 @@ void exchangeElement(studentList *head, int n1, int n2){
 	i++;
 	k2Node = k2Node->next;
     }
-    pre1Node->next = k2Node;
-    studentList *k1Next = k1Node->next;
-    k1Node->next = k2Node->next;
-    pre2Node->next = k1Node;
-    k2Node->next = k1Next;
+    if(k1Node->next==k2Node){
+	pre1Node->next = k2Node;
+        k1Node->next = k2Node->next;
+	k2Node->next = k1Node;
+    }else {
+        pre1Node->next = k2Node;
+        studentList *k1Next = k1Node->next;
+        k1Node->next = k2Node->next;
+        pre2Node->next = k1Node;
+        k2Node->next = k1Next;
+    }
 }
 
 int main()
 {
     studentList *list = createList(4);
-    studentList *node = getStudent(list,3);
-    printf("score %d\n",node->score);
+    //studentList *node = getStudent(list,3);
+    //printf("score %d\n",node->score);
     printList(list);
+
     printf("exchange:\n");
-    exchangeElement(list,1,3);
+    exchangeElement(list,1,2);
     printList(list);
-    printf("delete:\n");
+    exchangeElement(list,3,4);
+    printList(list);
+
+    // delete
+    printf("delete:3\n");
     deleteElement(list,3);
+    printList(list);
+
+    // add
+    printf("add: 3 \n");
+    studentList *element = (studentList *)malloc(sizeof(studentList));
+    scanf("%d",&element->score);
+    addElement(list,element,3);
     printList(list);
 }
