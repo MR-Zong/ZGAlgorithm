@@ -1,11 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 typedef struct student{
     int score;
     struct student *next;
 }studentList;
 
+
+typedef struct studentListHead{
+    int count;
+    struct student *next;
+}studentListHead;
 
 studentList * createList(int n){
    if(n<=0){
@@ -27,12 +33,15 @@ studentList * createList(int n){
 }
 
 studentList * getStudent(studentList *head,int n){
-        studentList *node = head;
-        int i = 0;
-        while(i<n && node!=NULL){
+    studentList *node = head;
+    int i = 0;
+    while(i<n && node!=NULL){
+        printf("i  %d, node->score %d ,node %p\n",i,node->score,node);
 	    node = node->next;
-            i++;
-        }
+        i++;
+    }
+    if(node==NULL)
+    printf("node is NULL\n");
 	return node;
 } 
 
@@ -109,8 +118,16 @@ void exchangeElement(studentList *head, int n1, int n2){
 
 int main()
 {
+    // 证明NULL->xxx 是不会崩溃的
+    // 但只要引用一个没有地址的内存就会崩溃
+    //studentList *xxx = NULL;
+    //xxx->score;
+    //int yy = xxx->score;
+
     studentList *list = createList(4);
-    //studentList *node = getStudent(list,3);
+    //studentList *node = getStudent(list,5);
+    //if(node!=NULL)
+    //studentList *node = NULL;
     //printf("score %d\n",node->score);
     printList(list);
 
